@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ProjectName.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2 class="mb-3">Products</h2>
+<p class="text-muted">Current Theme: <strong>@ViewBag.CurrentTheme</strong></p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+    @foreach (var product in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm text-center p-3">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text text-muted fs-5">$@product.Price</p>
+                    <a asp-controller="Products" asp-action="AddToSession" asp-route-id="@product.Id" class="btn btn-primary w-100">Add to Session</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

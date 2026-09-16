@@ -1,0 +1,19 @@
+﻿@model ProjectName.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h2>Product Details</h2>
+<p class="text-muted">key: "product-details-@Model?.Id"</p>
+
+@if (Model != null)
+{
+    <div class="card shadow-sm p-4 style="max-width: 400px;">
+        <h4>Id: @Model.Id</h4>
+        <h4>Name: @Model.Name</h4>
+        <h4>Price: $@Model.Price</h4>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-primary mt-3">Back to Products</a>

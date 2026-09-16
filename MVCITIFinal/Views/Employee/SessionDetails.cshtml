@@ -1,0 +1,23 @@
+﻿@model ProjectName.DAL.Entities.Employee
+
+<h2>Session - Employee Details</h2>
+<p class="text-muted">key: "employee-details-@Model?.Id"</p>
+
+@if (Model != null)
+{
+    <div class="card shadow-sm style="max-width: 400px;">
+        <img src="@Model.ImagePath" class="card-img-top" style="height: 250px; object-fit: cover;" />
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text"><strong>Age:</strong> @Model.Age</p>
+            <p class="card-text"><strong>Salary:</strong> $@Model.Salary</p>
+            <p class="card-text"><strong>Status:</strong> @(Model.IsApproved ? "Approved" : "Rejected")</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">@ViewBag.Message</div>
+}
+
+<a asp-action="Index" class="btn btn-primary mt-3">Back to Employees</a>
