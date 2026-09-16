@@ -1,15 +1,20 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using ProjectName.DAL.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     string theme = Context.Request.Cookies["UserTheme"] ?? "White";
-    string bgClass = theme == "Black" ? "bg-dark text-white" : "bg-light text-dark";
-    string cardClass = theme == "Black" ? "bg-secondary text-white" : "bg-white text-dark";
+    string themeClass = theme == "Black" ? "theme-dark" : "theme-light";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - App</title>
-    <!-- Bootstrap 5 CDN Template -->
+    <title>@ViewData["Title"] - MVC Final App</title>
+    <!-- Bootstrap 5 CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <style>
         body.theme-dark {
@@ -32,11 +37,16 @@
             }
     </style>
 </head>
-<body class="@(theme == "Black" ? "theme-dark" : "theme-light")">
+<body class="@themeClass">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVC Final App</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -48,6 +58,30 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Products" asp-action="Index">Products (Session)</a>
                         </li>
+                    </ul>
+
+                    <!-- Authentication Links -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item d-flex align-items-center me-2">
+                                <span class="text-light me-2">Hello, @User.Identity?.Name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -69,5 +69,50 @@ namespace ProjectName.Controllers
             }
             return View(emp);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var employee = _repo.GetById(id);
+            if (employee == null) return NotFound();
+
+            var model = new EmployeeFormViewModel
+            {
+                Name = employee.Name,
+                Age = employee.Age,
+                Salary = employee.Salary
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, EmployeeFormViewModel model)
+        {
+            var employee = _repo.GetById(id);
+            if (employee == null) return NotFound();
+
+            employee.Name = model.Name;
+            employee.Age = model.Age;
+            employee.Salary = model.Salary;
+
+            if (model.Image != null && model.Image.Length > 0)
+            {
+                employee.ImagePath = DocumentSettings.UploadFile(model.Image, "images");
+            }
+
+            _repo.Update(employee);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var employee = _repo.GetById(id);
+            if (employee != null)
+            {
+                _repo.Delete(employee.Id); 
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
